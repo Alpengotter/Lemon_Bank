@@ -31,7 +31,6 @@ public class UserController {
     @GetMapping("/employers")
     public List<UserResponseDto> getEmployers(@RequestParam("offset") Integer offset,
         @RequestParam("limit") Integer limit) {
-
         return userService.getAllUsers(offset, limit);
     }
 
