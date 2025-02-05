@@ -3,6 +3,9 @@ services:
   lemon_bank_app:
     depends_on:
       - lemon_db_postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=${PROFILE}
+      - DATABASE_URL=${DATABASE_URL}
     build:
       context: .
     ports:
@@ -10,6 +13,7 @@ services:
     networks:
       - my_network
     container_name: lemon_bank-lemon_bank_app
+
   lemon_db_postgres:
     restart: on-failure
     image: postgres
