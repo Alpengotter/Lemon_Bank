@@ -9,6 +9,7 @@ import com.dlb.lemon_bank.service.OrdersService;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/history")
+@CrossOrigin(origins = {"https://bankoflemons.ru", "https://store.zarplata.ru", "https://uat.bankoflemons.ru"})
 @RequiredArgsConstructor
 public class HistoryController {
     private final HistoryService historyService;
