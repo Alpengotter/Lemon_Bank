@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/history")
-@CrossOrigin(origins = {"https://bankoflemons.ru", "https://store.zarplata.ru", "https://uat.bankoflemons.ru"})
+//@CrossOrigin(origins = {"https://bankoflemons.ru", "https://store.zarplata.ru", "https://uat.bankoflemons.ru"})
 @RequiredArgsConstructor
 public class HistoryController {
     private final HistoryService historyService;
