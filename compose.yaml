@@ -28,7 +28,7 @@ services:
     environment:
       POSTGRES_DB: lemon_bank_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres1
+      POSTGRES_PASSWORD: KG41&?uh5^ww)4q
     ports:
       - '5433:5432'
     networks:

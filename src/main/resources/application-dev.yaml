@@ -3,4 +3,4 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: ${DATABASE_URL}
     username: postgres
-    password: postgres1
+    password: KG41&?uh5^ww)4q
