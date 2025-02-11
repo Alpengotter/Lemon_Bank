@@ -8,6 +8,7 @@ import com.dlb.lemon_bank.domain.dto.UserResponseDto;
 import com.dlb.lemon_bank.domain.dto.UserStatusMultipleUpdateDto;
 import com.dlb.lemon_bank.domain.dto.UserStatusUpdateDto;
 import com.dlb.lemon_bank.domain.entity.UserEntity;
+import com.dlb.lemon_bank.domain.enums.AnalitiqueType;
 import com.dlb.lemon_bank.domain.mapper.UserMapper;
 import com.dlb.lemon_bank.domain.repository.UserRepository;
 import com.dlb.lemon_bank.handler.ErrorType;
@@ -31,6 +32,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final HistoryService historyService;
+    private final AnalitiqueService analitiqueService;
 
     @Transactional
     public List<UserResponseDto> getAllUsers(Integer offset, Integer limit) {
@@ -89,6 +91,10 @@ public class UserService {
         }
         UserEntity userEntity = userMapper.toUserEntity(userBaseDto);
         UserEntity saved = userRepository.save(userEntity);
+        analitiqueService.saveAnalitique(
+            AnalitiqueType.NEW_EMPLOYER.getMessage(),
+            null,
+            null);
         return userMapper.toUserResponseDto(saved);
     }
 
@@ -105,14 +111,22 @@ public class UserService {
         Integer differenceLemons = currencyUpdateDtoDto.getLemons() - currentLemons;
         Integer differenceDiamonds = currencyUpdateDtoDto.getDiamonds() - currentDiamonds;
 
-
         userEntity.setDiamonds(currencyUpdateDtoDto.getDiamonds());
         userEntity.setLemons(currencyUpdateDtoDto.getLemons());
+
         UserEntity saved = userRepository.save(userEntity);
 
         historyService.changeCurrency(saved, differenceLemons, differenceDiamonds,
             currencyUpdateDtoDto.getComment());
 
+        String currency;
+        if (differenceDiamonds != 0) {
+            currency = "diamonds";
+            analitiqueService.saveAnalitique(AnalitiqueType.REWARD.getMessage(), differenceDiamonds, currency);
+        } else if (differenceLemons != 0) {
+            currency = "lemons";
+            analitiqueService.saveAnalitique(AnalitiqueType.REWARD.getMessage(), differenceLemons, currency);
+        }
 
         return userMapper.toUserResponseDto(saved);
     }
@@ -129,6 +143,9 @@ public class UserService {
         }
         UserEntity userEntity = user.get();
         userEntity.setIsActive(statusUpdateDto.getIsActive());
+        if (!statusUpdateDto.getIsActive()) {
+            analitiqueService.saveAnalitique(AnalitiqueType.DEACTIVATE.getMessage(), null, null);
+        }
         UserEntity saved = userRepository.save(userEntity);
 
         return userMapper.toUserResponseDto(saved);

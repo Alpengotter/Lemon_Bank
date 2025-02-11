@@ -5,6 +5,7 @@ import com.dlb.lemon_bank.domain.dto.OrderUpdateStatusDto;
 import com.dlb.lemon_bank.domain.dto.OrderWebhookDto;
 import com.dlb.lemon_bank.domain.entity.OrdersEntity;
 import com.dlb.lemon_bank.domain.entity.UserEntity;
+import com.dlb.lemon_bank.domain.enums.AnalitiqueType;
 import com.dlb.lemon_bank.domain.mapper.OrderMapper;
 import com.dlb.lemon_bank.domain.repository.OrdersRepository;
 import com.dlb.lemon_bank.domain.repository.UserRepository;
@@ -25,11 +26,16 @@ public class OrdersService {
     private final OrderMapper orderMapper;
     private final OrdersRepository ordersRepository;
     private final HistoryService historyService;
+    private final AnalitiqueService analitiqueService;
 
     @Transactional
     public OrderResponseDto createNewOrder(OrderWebhookDto orderDto) {
         OrdersEntity orderEntity = orderMapper.toOrderEntity(orderDto);
         OrdersEntity savedOrder = ordersRepository.save(orderEntity);
+        analitiqueService.saveAnalitique(
+            AnalitiqueType.NEW_ORDER.getMessage(),
+            savedOrder.getTotal(),
+            "lemons");
         return orderMapper.toOrderResponseDto(savedOrder);
     }
 
@@ -56,7 +62,19 @@ public class OrdersService {
             throw new LemonBankException(ErrorType.ORDER_NOT_FOUND);
         }
         OrdersEntity ordersEntity = order.get();
-        ordersEntity.setStatus(orderDto.getStatus());
+        String status = orderDto.getStatus();
+        ordersEntity.setStatus(status);
+
+        if (status.equals("ACTIVE")) {
+            analitiqueService.saveAnalitique(AnalitiqueType.ACCEPT_ORDER.getMessage(),
+                ordersEntity.getTotal(),
+                "lemons");
+        } else {
+            analitiqueService.saveAnalitique(AnalitiqueType.DECLINE_ORDER.getMessage(),
+                ordersEntity.getTotal(),
+                "lemons");
+        }
+
         OrdersEntity saved = ordersRepository.save(ordersEntity);
 
         historyService.addOrderInHistory(saved);
