@@ -27,6 +27,7 @@ public class OrdersService {
     private final OrdersRepository ordersRepository;
     private final HistoryService historyService;
     private final AnalitiqueService analitiqueService;
+    private final UserRepository userRepository;
 
     @Transactional
     public OrderResponseDto createNewOrder(OrderWebhookDto orderDto) {
@@ -65,10 +66,14 @@ public class OrdersService {
         String status = orderDto.getStatus();
         ordersEntity.setStatus(status);
 
-        if (status.equals("ACTIVE")) {
+        if (status.equals("ACCEPTED")) {
             analitiqueService.saveAnalitique(AnalitiqueType.ACCEPT_ORDER.getMessage(),
                 ordersEntity.getTotal(),
                 "lemons");
+            UserEntity employee = ordersEntity.getEmployee();
+            Integer employeeLemons = employee.getLemons();
+            employee.setLemons(employeeLemons - ordersEntity.getTotal());
+            userRepository.saveAndFlush(employee);
         } else {
             analitiqueService.saveAnalitique(AnalitiqueType.DECLINE_ORDER.getMessage(),
                 ordersEntity.getTotal(),
