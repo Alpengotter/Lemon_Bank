@@ -1,6 +1,7 @@
 package com.dlb.lemon_bank.controller;
 
 import com.dlb.lemon_bank.domain.dto.AnalitiqueResponseDto;
+import com.dlb.lemon_bank.domain.dto.AnalitiqueSummaryResponseDto;
 import com.dlb.lemon_bank.service.AnalitiqueService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,13 @@ public class AnalitiqueController {
         @RequestParam(value = "month", required = false) Integer month,
         @RequestParam(value = "day", required = false) Integer day) {
         return analitiqueService.getAnalitique(type, year, month, day);
+    }
+
+    @GetMapping("/get-analitique-summary")
+    public AnalitiqueSummaryResponseDto getAnalitiqueSummary(
+        @RequestParam("type") String type,
+        @RequestParam(value = "year") Integer year) {
+        return analitiqueService.getAnalitiqueSummary(type, year);
     }
 
 }

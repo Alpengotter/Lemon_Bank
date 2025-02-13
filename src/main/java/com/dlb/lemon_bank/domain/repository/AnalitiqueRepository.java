@@ -20,4 +20,12 @@ public interface AnalitiqueRepository extends JpaRepository<AnalitiqueEntity, In
         @Param("month") Integer month,
         @Param("day") Integer day
     );
+
+    @Query("SELECT a FROM AnalitiqueEntity a WHERE " +
+        "(:year IS NULL OR YEAR(a.date) = :year) AND " +
+        " a.type = :type")
+    List<AnalitiqueEntity> findByTypeAndYear(
+        @Param("type") String type,
+        @Param("year") Integer year
+    );
 }
