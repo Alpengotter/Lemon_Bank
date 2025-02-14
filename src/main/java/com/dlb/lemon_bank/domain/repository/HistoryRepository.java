@@ -7,8 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HistoryRepository extends JpaRepository<HistoryEntity, Integer> {
 
-    List<HistoryEntity> findAllByDateBetweenAndUserEmailContaining(LocalDate dateFrom, LocalDate dateTo, String email);
-    List<HistoryEntity> findAllByDateBetweenAndUserFirstNameContainingOrUserLastNameContaining(
+    List<HistoryEntity> findAllByDateBetweenAndUserEmailContainingOrderByIdDesc(
+        LocalDate dateFrom,
+        LocalDate dateTo,
+        String email);
+    List<HistoryEntity> findAllByDateBetweenAndUserFirstNameContainingOrUserLastNameContainingOrderByIdDesc(
         LocalDate dateFrom,
         LocalDate dateTo,
         String firstName,
