@@ -45,7 +45,7 @@ public class HistoryService {
         HistoryEntity historyEntity = HistoryEntity.builder()
             .admin(admin.get())
             .user(orders.getEmployee())
-            .date(date)
+            .date(LocalDate.now())
             .type("order")
             .comment("Подтверждение заказа")
             .order(orders)
