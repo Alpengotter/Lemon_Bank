@@ -16,5 +16,5 @@ public interface HistoryRepository extends JpaRepository<HistoryEntity, Integer>
         LocalDate dateTo,
         String firstName,
         String lastName);
-    List<HistoryEntity> findAllByUserId(Integer id);
+    List<HistoryEntity> findAllByUserIdOrderByIdDesc(Integer id);
 }

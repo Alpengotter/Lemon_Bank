@@ -119,7 +119,7 @@ public class HistoryService {
 
     @Transactional
     public List<HistoryResponseDto> getHistoryById(Integer id) {
-        List<HistoryEntity> historyEntities = historyRepository.findAllByUserId(id);
+        List<HistoryEntity> historyEntities = historyRepository.findAllByUserIdOrderByIdDesc(id);
         return historyMapper.toHistoryResponseDtoList(historyEntities);
     }
 }
