@@ -50,7 +50,7 @@ public class HistoryService {
             .comment("Подтверждение заказа")
             .order(orders)
             .currency("lemons")
-            .value(orders.getTotal())
+            .value(-orders.getTotal())
             .build();
         historyRepository.save(historyEntity);
     }
