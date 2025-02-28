@@ -11,14 +11,16 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
-    Optional<UserEntity> findByEmailContainingAndIsActiveIsTrue(String email);
+    Optional<UserEntity> findByEmailContainingIgnoreCaseAndIsActiveIsTrue(String email);
     @Query(value = "select u from UserEntity u where u.isActive = true order by u.lastName asc",
     countQuery = "select count(u) from UserEntity u where u.isActive = true")
     Page<UserEntity> findAllAndIsActiveIsTrue(Pageable pageRequest);
 
     List<UserEntity> findAllByIdInAndIsActiveIsTrue(List<Integer> ids);
-//    @Query(value = "select u from UserEntity u where (u.firstName like %:firstName or u.lastName like %:lastName) and u.isActive = true")
-    List<UserEntity> findByFirstNameContainingOrLastNameContainingAndIsActiveIsTrue(String firstName, String lastName);
+    @Query(value = "select u from UserEntity u "
+        + "where (lower(u.firstName) like lower(concat('%', :firstName, '%')) or lower(u.lastName) like lower(concat('%', :lastName, '%'))) "
+        + "and u.isActive = true")
+    List<UserEntity> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndIsActiveIsTrue(String firstName, String lastName);
     Optional<UserEntity> findByIdAndIsActiveIsTrue(Integer id);
     @Modifying
     @Query("update UserEntity u set u.diamonds = ?1 where u.id in ?2")

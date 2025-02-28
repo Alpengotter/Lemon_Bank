@@ -20,7 +20,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<UserEntity> user = userRepository.findByEmailContainingAndIsActiveIsTrue(email);
+        Optional<UserEntity> user = userRepository.findByEmailContainingIgnoreCaseAndIsActiveIsTrue(email);
         if (user.isPresent())
         {
             UserEntity userObj = user.get();

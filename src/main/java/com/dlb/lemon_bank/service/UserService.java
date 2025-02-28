@@ -52,7 +52,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDto getUserByEmail(String email) {
-        Optional<UserEntity> user = userRepository.findByEmailContainingAndIsActiveIsTrue(email);
+        Optional<UserEntity> user = userRepository.findByEmailContainingIgnoreCaseAndIsActiveIsTrue(email);
         if (user.isEmpty()) {
             throw new LemonBankException(ErrorType.USER_NOT_FOUND);
         }
@@ -67,7 +67,7 @@ public class UserService {
         log.info("Check is English Symbols");
         if (isEnglishSymbols(trimParameter)) {
             log.info("Find by email");
-            Optional<UserEntity> user = userRepository.findByEmailContainingAndIsActiveIsTrue(trimParameter);
+            Optional<UserEntity> user = userRepository.findByEmailContainingIgnoreCaseAndIsActiveIsTrue(trimParameter);
             if (user.isEmpty()) {
                 throw new LemonBankException(ErrorType.USER_NOT_FOUND);
             }
@@ -75,7 +75,7 @@ public class UserService {
         }
         log.info("Find by Name");
         List<UserEntity> usersByFirstOrLastName =
-            userRepository.findByFirstNameContainingOrLastNameContainingAndIsActiveIsTrue(trimParameter, trimParameter);
+            userRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseAndIsActiveIsTrue(trimParameter, trimParameter);
         if (usersByFirstOrLastName.isEmpty()) {
             throw new LemonBankException(ErrorType.USER_NOT_FOUND);
         }
@@ -85,7 +85,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDto postNewUser(UserBaseDto userBaseDto) {
-        Optional<UserEntity> existedUser = userRepository.findByEmailContainingAndIsActiveIsTrue(userBaseDto.getEmail());
+        Optional<UserEntity> existedUser = userRepository.findByEmailContainingIgnoreCaseAndIsActiveIsTrue(userBaseDto.getEmail());
         if (existedUser.isPresent()) {
             throw new LemonBankException(ErrorType.USER_ALREADY_EXIST);
         }

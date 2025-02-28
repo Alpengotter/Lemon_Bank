@@ -30,7 +30,7 @@ public class AuthService {
 
     @Transactional
     public JwtResponseDto getNewUserTokenFromLogin(JwtRequestDto requestDto) {
-        UserEntity user = userRepository.findByEmailContainingAndIsActiveIsTrue(requestDto.getEmail())
+        UserEntity user = userRepository.findByEmailContainingIgnoreCaseAndIsActiveIsTrue(requestDto.getEmail())
             .orElseThrow(() -> new LemonBankException(ErrorType.USER_NOT_FOUND));
         return JwtResponseDto.builder()
             .accessToken(jwtUtils.generateToken(user.getId()))

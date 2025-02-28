@@ -1,6 +1,5 @@
 package com.dlb.lemon_bank.domain.service;
 
-import com.dlb.lemon_bank.domain.entity.OrdersEntity;
 import com.dlb.lemon_bank.domain.entity.UserEntity;
 import com.dlb.lemon_bank.domain.repository.UserRepository;
 import com.dlb.lemon_bank.handler.ErrorType;
@@ -17,7 +16,7 @@ public class OrderMapperService {
 
     @Named("mapEmailToId")
     public UserEntity mapEmailToId(String email) {
-        Optional<UserEntity> user = userRepository.findByEmailContainingAndIsActiveIsTrue(email);
+        Optional<UserEntity> user = userRepository.findByEmailContainingIgnoreCaseAndIsActiveIsTrue(email);
         if (user.isPresent()) {
             return user.get();
         } else {
