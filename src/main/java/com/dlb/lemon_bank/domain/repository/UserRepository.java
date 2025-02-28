@@ -16,6 +16,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     countQuery = "select count(u) from UserEntity u where u.isActive = true")
     Page<UserEntity> findAllAndIsActiveIsTrue(Pageable pageRequest);
 
+    List<UserEntity> findByIsActiveIsTrue();
+
     List<UserEntity> findAllByIdInAndIsActiveIsTrue(List<Integer> ids);
     @Query(value = "select u from UserEntity u "
         + "where (lower(u.firstName) like lower(concat('%', :firstName, '%')) or lower(u.lastName) like lower(concat('%', :lastName, '%'))) "

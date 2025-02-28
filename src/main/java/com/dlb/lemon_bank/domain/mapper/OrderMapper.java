@@ -22,7 +22,8 @@ public interface OrderMapper {
     @Mapping(target = "id", ignore = true)
     OrdersEntity toOrderEntity(OrderWebhookDto orderDto);
 
-    @Mapping(target = "email", source = "orderEntity.employee", qualifiedByName = "mapEmployeeToEmail")
+//    @Mapping(target = "email", source = "orderEntity.employee", qualifiedByName = "mapEmployeeToEmail")
+    @Mapping(target = "email", source = "orderEntity.employee.email")
     OrderResponseDto toOrderResponseDto(OrdersEntity orderEntity);
 
     List<OrderResponseDto> toOrderDtoList(List<OrdersEntity> ordersEntities);

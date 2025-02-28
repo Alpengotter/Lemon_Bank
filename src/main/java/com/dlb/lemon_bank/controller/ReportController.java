@@ -17,19 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/report")
+@RequestMapping("/api/v1/reports")
 @RequiredArgsConstructor
 public class ReportController {
     private final ExcelService excelService;
 
-    @GetMapping("/download")
+    @GetMapping("/employee-resources")
     public ResponseEntity<ByteArrayResource> downloadExcel() throws IOException {
-        List<JwtRequestDto> dtos = List.of(new JwtRequestDto("1", "2"));
-        byte[] excelBytes = excelService.generateExcel(dtos);
+        byte[] excelBytes = excelService.generateExcelEmployees();
         ByteArrayResource resource = new ByteArrayResource(excelBytes);
 
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=your_dtos.xlsx")
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Report.xlsx")
             .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
             .body(resource);
     }
