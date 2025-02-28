@@ -15,13 +15,8 @@ public class AnalitiqueMapperService {
     private final UserRepository userRepository;
 
     @Named("mapType")
-    public UserEntity mapType(String email) {
-        Optional<UserEntity> user = userRepository.findByEmailContainingIgnoreCaseAndIsActiveIsTrue(email);
-        if (user.isPresent()) {
-            return user.get();
-        } else {
-            throw new LemonBankException(ErrorType.USER_NOT_FOUND);
-        }
+    public String mapType(String email) {
+        return new String("");
     }
 
 }
