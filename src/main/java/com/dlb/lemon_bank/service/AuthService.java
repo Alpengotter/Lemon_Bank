@@ -8,6 +8,7 @@ import com.dlb.lemon_bank.domain.repository.UserRepository;
 import com.dlb.lemon_bank.handler.ErrorType;
 import com.dlb.lemon_bank.handler.exception.LemonBankException;
 import com.dlb.lemon_bank.utils.JwtUtils;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,12 @@ public class AuthService {
     public JwtResponseDto getNewUserTokenFromLogin(JwtRequestDto requestDto) {
         UserEntity user = userRepository.findByEmailContainingIgnoreCaseAndIsActiveIsTrue(requestDto.getEmail())
             .orElseThrow(() -> new LemonBankException(ErrorType.USER_NOT_FOUND));
+        if (Objects.isNull(requestDto.getPassword()) || !requestDto.getPassword().equals(user.getPassword())) {
+            throw new LemonBankException(ErrorType.INCORRECT_PASSWORD);
+        }
+        if (!user.getUserRole().equalsIgnoreCase("ADMIN")) {
+            throw new LemonBankException(ErrorType.ACCESS_DENIED);
+        }
         return JwtResponseDto.builder()
             .accessToken(jwtUtils.generateToken(user.getId()))
             .build();
