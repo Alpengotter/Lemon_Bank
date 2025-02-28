@@ -50,7 +50,7 @@ public class AnalitiqueService {
     }
 
     @Transactional
-    public AnalitiqueSummaryResponseDto getAnalitiqueSummary(String type, Integer year) {
+    public List<AnalitiqueSummaryResponseDto> getAnalitiqueSummary(String type, Integer year) {
         List<Integer> totalMonthList = new ArrayList<>(Collections.nCopies(12, 0));
         Integer total = 0;
         List<AnalitiqueEntity> results = analitiqueRepository.findByTypeAndYear(type, year);
@@ -60,9 +60,10 @@ public class AnalitiqueService {
             totalMonthList.set(monthValue - 1, totalMonthList.get(monthValue - 1) + 1);
             total += 1;
         }
-        return AnalitiqueSummaryResponseDto.builder()
+
+        return List.of(AnalitiqueSummaryResponseDto.builder()
             .total(total)
             .totalMounth(totalMonthList)
-            .build();
+            .build());
     }
 }

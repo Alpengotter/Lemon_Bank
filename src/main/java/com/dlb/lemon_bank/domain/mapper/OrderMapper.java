@@ -4,7 +4,7 @@ package com.dlb.lemon_bank.domain.mapper;
 import com.dlb.lemon_bank.domain.dto.OrderResponseDto;
 import com.dlb.lemon_bank.domain.dto.OrderWebhookDto;
 import com.dlb.lemon_bank.domain.entity.OrdersEntity;
-import com.dlb.lemon_bank.domain.service.OrderMapperService;
+import com.dlb.lemon_bank.domain.mapper.service.OrderMapperService;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

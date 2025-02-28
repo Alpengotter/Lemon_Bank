@@ -15,17 +15,17 @@ public interface AnalitiqueRepository extends JpaRepository<AnalitiqueEntity, In
         "(:day IS NULL OR DAY(a.date) = :day) AND"
         + " a.type = :type")
     List<AnalitiqueEntity> findByTypeAndDate(
-        @Param("type") String type,
-        @Param("year") Integer year,
-        @Param("month") Integer month,
-        @Param("day") Integer day
+        String type,
+        Integer year,
+        Integer month,
+        Integer day
     );
 
     @Query("SELECT a FROM AnalitiqueEntity a "
         + "WHERE (:year IS NULL OR YEAR(a.date) = :year)"
         + "AND a.type = :type")
     List<AnalitiqueEntity> findByTypeAndYear(
-        @Param("type") String type,
-        @Param("year") Integer year
+        String type,
+        Integer year
     );
 }

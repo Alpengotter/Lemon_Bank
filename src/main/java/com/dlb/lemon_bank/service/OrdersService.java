@@ -74,8 +74,8 @@ public class OrdersService {
             UserEntity employee = ordersEntity.getEmployee();
             Integer employeeLemons = employee.getLemons();
             employee.setLemons(employeeLemons - ordersEntity.getTotal());
-            historyService.addOrderInHistory(saved);
             userRepository.saveAndFlush(employee);
+            historyService.addOrderInHistory(saved);
         } else {
             analitiqueService.saveAnalitique(AnalitiqueType.DECLINE_ORDER.getMessage(),
                 ordersEntity.getTotal(),
