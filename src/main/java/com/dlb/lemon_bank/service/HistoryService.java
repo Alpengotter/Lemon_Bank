@@ -38,10 +38,10 @@ public class HistoryService {
             throw new LemonBankException(ErrorType.ADMIN_NOT_FOUND);
         }
 
-        String dateString = orders.getDate();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        LocalDate date = LocalDate.parse(dateString, formatter);
-        log.debug("Parse date:{}",date);
+//        String dateString = orders.getDate();
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+//        LocalDate date = LocalDate.parse(dateString, formatter);
+//        log.debug("Parse date:{}",date);
         HistoryEntity historyEntity = HistoryEntity.builder()
             .admin(admin.get())
             .user(orders.getEmployee())

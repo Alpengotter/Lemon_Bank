@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
+    @Query("select u from UserEntity u where u.email = lower(:email)")
+    Optional<UserEntity> findByEmailIgnoreCase(String email);
     Optional<UserEntity> findByEmailContainingIgnoreCaseAndIsActiveIsTrue(String email);
     @Query(value = "select u from UserEntity u where u.isActive = true order by u.lastName asc",
     countQuery = "select count(u) from UserEntity u where u.isActive = true")

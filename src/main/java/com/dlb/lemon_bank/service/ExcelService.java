@@ -2,30 +2,27 @@ package com.dlb.lemon_bank.service;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.write.handler.CellWriteHandler;
-import com.alibaba.excel.write.handler.WriteHandler;
+import com.alibaba.excel.util.ListUtils;
 import com.alibaba.excel.write.metadata.WriteSheet;
-import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
-import com.alibaba.excel.write.metadata.holder.WriteTableHolder;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import com.dlb.lemon_bank.domain.dto.ExcelDateFilterDto;
+import com.dlb.lemon_bank.domain.dto.HistoryExcelDto;
+import com.dlb.lemon_bank.domain.dto.OrdersExcelDto;
 import com.dlb.lemon_bank.domain.dto.UserExcelDto;
 import com.dlb.lemon_bank.domain.entity.UserEntity;
+import com.dlb.lemon_bank.domain.mapper.HistoryMapper;
+import com.dlb.lemon_bank.domain.mapper.OrderMapper;
 import com.dlb.lemon_bank.domain.mapper.UserMapper;
 import com.dlb.lemon_bank.domain.repository.UserRepository;
-import com.dlb.lemon_bank.handler.LastRowStyleHandler;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,6 +30,8 @@ import org.springframework.stereotype.Service;
 public class ExcelService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final OrderMapper orderMapper;
+    private final HistoryMapper historyMapper;
 
     public byte[] generateExcelEmployees() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -67,23 +66,118 @@ public class ExcelService {
 
         ExcelWriter excelWriter = EasyExcel.write(outputStream, UserExcelDto.class)
             .registerWriteHandler(styleStrategy)
-            .registerWriteHandler(new LastRowStyleHandler(excelList.size()))
             .build();
 
         WriteSheet writeSheet = EasyExcel.writerSheet("Отчет")
-//            .includeColumnFieldNames(Arrays.asList("ФИО", "Кол-во лимонов", "Кол-во алмазов"))
             .build();
 
         excelWriter.write(excelList, writeSheet);
 
-//        Sheet sheet = excelWriter.writeContext().writeSheetHolder().getSheet();
-//        for (int i = 0; i < excelList.get(0).getClass().getDeclaredFields().length; i++) {
-//            sheet.autoSizeColumn(i);
-//        }
 
         // Завершаем запись
         excelWriter.finish();
 
         return outputStream.toByteArray();
+    }
+
+    public byte[] generateExcelOrders(Integer year) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        List<OrdersExcelDto> excelList = orderMapper.toOrdersExcelDtoList(
+            generateOrderExcelFilterDtos(year));
+        Integer countOrders = 0;
+        for (OrdersExcelDto el : excelList) {
+            countOrders += el.getCountOrders();
+        }
+        excelList.add(OrdersExcelDto.builder()
+            .month("Итого")
+            .countOrders(countOrders)
+            .build());
+
+        WriteCellStyle headerStyle = new WriteCellStyle();
+        WriteFont headerFont = new WriteFont();
+        headerFont.setBold(true); // Жирный шрифт
+        headerFont.setFontHeightInPoints((short) 9); // Размер шрифта
+        headerStyle.setWriteFont(headerFont);
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); // Цвет фона
+        WriteCellStyle contentStyle = new WriteCellStyle();
+        HorizontalCellStyleStrategy styleStrategy = new HorizontalCellStyleStrategy(headerStyle, contentStyle);
+
+        ExcelWriter excelWriter = EasyExcel.write(outputStream, OrdersExcelDto.class)
+            .registerWriteHandler(styleStrategy)
+//            .registerWriteHandler(new CustomCellWriteHandler())
+            .build();
+
+        WriteSheet writeSheet = EasyExcel.writerSheet("Отчет")
+            .build();
+
+        excelWriter.write(excelList, writeSheet);
+
+
+        // Завершаем запись
+        excelWriter.finish();
+
+        return outputStream.toByteArray();
+    }
+
+    public byte[] generateExcelResourseTransactions(Integer year) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        List<HistoryExcelDto> excelList = historyMapper.toHistoryExcelDtoList(
+            generateOrderExcelFilterDtos(year));
+
+        Integer countLemonSpend = 0;
+        Integer countLemonAccrued = 0;
+        Integer countDiamondsSpend = 0;
+        Integer countDiamondsAccrued = 0;
+        for (HistoryExcelDto el : excelList) {
+            countLemonSpend += el.getCountLemonsSpend();
+            countLemonAccrued += el.getCountLemonsAccrued();
+            countDiamondsSpend += el.getCountDiamondsSpend();
+            countDiamondsAccrued += el.getCountDiamondsAccrued();
+        }
+        excelList.add(HistoryExcelDto.builder()
+            .month("Итого")
+            .countLemonsSpend(countLemonSpend)
+                .countLemonsAccrued(countLemonAccrued)
+                .countDiamondsSpend(countDiamondsSpend)
+                .countDiamondsAccrued(countDiamondsAccrued)
+            .build());
+
+        WriteCellStyle headerStyle = new WriteCellStyle();
+        WriteFont headerFont = new WriteFont();
+        headerFont.setBold(true); // Жирный шрифт
+        headerFont.setFontHeightInPoints((short) 9); // Размер шрифта
+        headerStyle.setWriteFont(headerFont);
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); // Цвет фона
+        WriteCellStyle contentStyle = new WriteCellStyle();
+        HorizontalCellStyleStrategy styleStrategy = new HorizontalCellStyleStrategy(headerStyle, contentStyle);
+
+        ExcelWriter excelWriter = EasyExcel.write(outputStream, HistoryExcelDto.class)
+            .registerWriteHandler(styleStrategy)
+            .build();
+
+        WriteSheet writeSheet = EasyExcel.writerSheet("Отчет")
+            .build();
+
+        excelWriter.write(excelList, writeSheet);
+
+
+        // Завершаем запись
+        excelWriter.finish();
+
+        return outputStream.toByteArray();
+    }
+
+
+    private List<ExcelDateFilterDto> generateOrderExcelFilterDtos(Integer year) {
+        List<ExcelDateFilterDto> filterDtos = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            filterDtos.add(ExcelDateFilterDto.builder()
+                    .month(i)
+                    .year(year)
+                .build());
+        }
+        return filterDtos;
     }
 }

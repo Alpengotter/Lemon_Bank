@@ -9,4 +9,9 @@ public interface OrdersRepository extends JpaRepository<OrdersEntity, Integer> {
     @Query("select o from OrdersEntity o where o.status = 'ACTIVE'")
     List<OrdersEntity> findAllActiveOrders();
 
+    @Query("select count(o) from OrdersEntity o "
+        + "where YEAR(o.date) = :year "
+        + "and MONTH(o.date) = :month "
+        + "and (o.status = 'ACCEPTED' or o.status = 'REJECTED')")
+    Integer countAllProccessedOrders(Integer month, Integer year);
 }

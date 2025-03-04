@@ -32,7 +32,7 @@ public class OrdersEntity {
     @JoinColumn(name = "employee_id")
     private UserEntity employee;
     @Column(name = "date_order")
-    private String date;
+    private LocalDateTime date;
     @Column(name = "items")
     private String items;
     @Column(name = "status")

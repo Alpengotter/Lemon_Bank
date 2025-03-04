@@ -1,8 +1,10 @@
 package com.dlb.lemon_bank.domain.mapper;
 
 
+import com.dlb.lemon_bank.domain.dto.ExcelDateFilterDto;
 import com.dlb.lemon_bank.domain.dto.OrderResponseDto;
 import com.dlb.lemon_bank.domain.dto.OrderWebhookDto;
+import com.dlb.lemon_bank.domain.dto.OrdersExcelDto;
 import com.dlb.lemon_bank.domain.entity.OrdersEntity;
 import com.dlb.lemon_bank.domain.mapper.service.OrderMapperService;
 import java.util.List;
@@ -19,6 +21,7 @@ public interface OrderMapper {
     @Mapping(target = "tildaId", source = "orderDto.id")
     @Mapping(target = "total", source = "orderDto.total")
     @Mapping(target = "status", constant = "ACTIVE")
+    @Mapping(target = "date", source = "orderDto.date", qualifiedByName = "mapDate")
     @Mapping(target = "id", ignore = true)
     OrdersEntity toOrderEntity(OrderWebhookDto orderDto);
 
@@ -27,5 +30,11 @@ public interface OrderMapper {
     OrderResponseDto toOrderResponseDto(OrdersEntity orderEntity);
 
     List<OrderResponseDto> toOrderDtoList(List<OrdersEntity> ordersEntities);
+
+    @Mapping(target = "month", source = "filterDto.month", qualifiedByName = "mapDateToMonth")
+    @Mapping(target = "countOrders", source = "filterDto", qualifiedByName = "mapCountOrders")
+    OrdersExcelDto toOrderExcelDto(ExcelDateFilterDto filterDto);
+
+    List<OrdersExcelDto> toOrdersExcelDtoList(List<ExcelDateFilterDto> filterDto);
 
 }

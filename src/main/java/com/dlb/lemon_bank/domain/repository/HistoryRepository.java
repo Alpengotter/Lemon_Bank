@@ -33,4 +33,32 @@ public interface HistoryRepository extends JpaRepository<HistoryEntity, Integer>
         String lastName);
 
     List<HistoryEntity> findAllByUserIdOrderByIdDesc(Integer id);
+
+    @Query("select count(h) from HistoryEntity h "
+        + "where YEAR(h.date) = :year "
+        + "and MONTH(h.date) = :month "
+        + "and h.currency = 'lemons'"
+        + "and h.value < 0")
+    Integer countLemonsSpend(Integer month, Integer year);
+
+    @Query("select count(h) from HistoryEntity h "
+        + "where YEAR(h.date) = :year "
+        + "and MONTH(h.date) = :month "
+        + "and h.currency = 'lemons'"
+        + "and h.value > 0")
+    Integer countLemonsAccrued(Integer month, Integer year);
+
+    @Query("select count(h) from HistoryEntity h "
+        + "where YEAR(h.date) = :year "
+        + "and MONTH(h.date) = :month "
+        + "and h.currency = 'diamonds'"
+        + "and h.value < 0")
+    Integer countDiamondsSpend(Integer month, Integer year);
+
+    @Query("select count(h) from HistoryEntity h "
+        + "where YEAR(h.date) = :year "
+        + "and MONTH(h.date) = :month "
+        + "and h.currency = 'diamonds'"
+        + "and h.value > 0")
+    Integer countDiamondsAccrued(Integer month, Integer year);
 }

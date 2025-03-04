@@ -23,8 +23,30 @@ public class ReportController {
     private final ExcelService excelService;
 
     @GetMapping("/employee-resources")
-    public ResponseEntity<ByteArrayResource> downloadExcel() throws IOException {
+    public ResponseEntity<ByteArrayResource> downloadExcelEmployees() throws IOException {
         byte[] excelBytes = excelService.generateExcelEmployees();
+        ByteArrayResource resource = new ByteArrayResource(excelBytes);
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Report.xlsx")
+            .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+            .body(resource);
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<ByteArrayResource> downloadExcelOrders(@RequestParam(value = "year") Integer year) throws IOException {
+        byte[] excelBytes = excelService.generateExcelOrders(year);
+        ByteArrayResource resource = new ByteArrayResource(excelBytes);
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Report.xlsx")
+            .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+            .body(resource);
+    }
+
+    @GetMapping("/resource-transactions")
+    public ResponseEntity<ByteArrayResource> downloadExcelResourseTransactions(@RequestParam(value = "year") Integer year) throws IOException {
+        byte[] excelBytes = excelService.generateExcelResourseTransactions(year);
         ByteArrayResource resource = new ByteArrayResource(excelBytes);
 
         return ResponseEntity.ok()

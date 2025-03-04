@@ -1,15 +1,19 @@
 package com.dlb.lemon_bank.domain.mapper;
 
 
+import com.dlb.lemon_bank.domain.dto.ExcelDateFilterDto;
+import com.dlb.lemon_bank.domain.dto.HistoryExcelDto;
 import com.dlb.lemon_bank.domain.dto.HistoryResponseDto;
 import com.dlb.lemon_bank.domain.entity.HistoryEntity;
+import com.dlb.lemon_bank.domain.mapper.service.HistoryMapperService;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
-        unmappedTargetPolicy = ReportingPolicy.IGNORE
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        uses = HistoryMapperService.class
 )
 public interface HistoryMapper {
 
@@ -19,5 +23,14 @@ public interface HistoryMapper {
     HistoryResponseDto toHistoryResponseDto(HistoryEntity historyEntity);
 
     List<HistoryResponseDto> toHistoryResponseDtoList(List<HistoryEntity> historyEntity);
+
+    @Mapping(target = "month", source = "filterDto.month", qualifiedByName = "mapDateToMonth")
+    @Mapping(target = "countLemonsSpend", source = "filterDto", qualifiedByName = "mapCountLemonsSpend")
+    @Mapping(target = "countLemonsAccrued", source = "filterDto", qualifiedByName = "mapCountLemonsAccrued")
+    @Mapping(target = "countDiamondsSpend", source = "filterDto", qualifiedByName = "mapCountDiamondsSpend")
+    @Mapping(target = "countDiamondsAccrued", source = "filterDto", qualifiedByName = "mapCountDiamondsAccrued")
+    HistoryExcelDto toHistoryExcelDto(ExcelDateFilterDto filterDto);
+
+    List<HistoryExcelDto> toHistoryExcelDtoList(List<ExcelDateFilterDto> excelDateFilterDtoList);
 
 }

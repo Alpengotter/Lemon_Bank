@@ -11,3 +11,6 @@ databaseChangeLog:
   - include:
       file: db/migration/create_analitics_table.sql
       relativeToChangelogFile: false
+  - include:
+      file: db/migration/change_orders_table.sql
+      relativeToChangelogFile: false
