@@ -21,7 +21,7 @@ public interface OrderMapper {
     @Mapping(target = "tildaId", source = "orderDto.id")
     @Mapping(target = "total", source = "orderDto.total")
     @Mapping(target = "status", constant = "ACTIVE")
-    @Mapping(target = "date", source = "orderDto.date", qualifiedByName = "mapDate")
+    @Mapping(target = "date", source = "orderDto.date", qualifiedByName = "mapDateFromString")
     @Mapping(target = "id", ignore = true)
     OrdersEntity toOrderEntity(OrderWebhookDto orderDto);
 

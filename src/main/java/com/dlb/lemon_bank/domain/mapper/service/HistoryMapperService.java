@@ -4,6 +4,7 @@ import com.dlb.lemon_bank.domain.dto.ExcelDateFilterDto;
 import com.dlb.lemon_bank.domain.repository.HistoryRepository;
 import java.time.Month;
 import java.util.Locale;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -23,21 +24,25 @@ public class HistoryMapperService {
 
     @Named("mapCountLemonsSpend")
     public Integer mapCountLemontSpend(ExcelDateFilterDto filterDto) {
-        return historyRepository.countLemonsSpend(filterDto.getMonth(), filterDto.getYear());
+        return Optional.ofNullable(historyRepository.countLemonsSpend(filterDto.getMonth(), filterDto.getYear()))
+            .orElse(0);
     }
 
     @Named("mapCountLemonsAccrued")
     public Integer mapCountLemontAccrued(ExcelDateFilterDto filterDto) {
-        return historyRepository.countLemonsAccrued(filterDto.getMonth(), filterDto.getYear());
+        return Optional.ofNullable(historyRepository.countLemonsAccrued(filterDto.getMonth(), filterDto.getYear()))
+            .orElse(0);
     }
 
     @Named("mapCountDiamondsSpend")
     public Integer mapCountDiamondsSpend(ExcelDateFilterDto filterDto) {
-        return historyRepository.countDiamondsSpend(filterDto.getMonth(), filterDto.getYear());
+        return Optional.ofNullable(historyRepository.countDiamondsSpend(filterDto.getMonth(), filterDto.getYear()))
+            .orElse(0);
     }
 
     @Named("mapCountDiamondsAccrued")
     public Integer mapCountDiamondsAccrued(ExcelDateFilterDto filterDto) {
-        return historyRepository.countDiamondsAccrued(filterDto.getMonth(), filterDto.getYear());
+        return Optional.ofNullable(historyRepository.countDiamondsAccrued(filterDto.getMonth(), filterDto.getYear()))
+            .orElse(0);
     }
 }

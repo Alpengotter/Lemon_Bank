@@ -33,10 +33,10 @@ public class OrderMapperService {
         }
     }
 
-    @Named("mapDate")
-    public LocalDateTime mapDate(String dateString) {
+    @Named("mapDateFromString")
+    public LocalDateTime mapDateFromString(String dateString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return LocalDateTime.of(LocalDate.parse(dateString, formatter), LocalTime.MIN);
+        return LocalDateTime.of(LocalDate.parse(dateString, formatter), LocalTime.now());
     }
 
     @Named("mapDateToMonth")
