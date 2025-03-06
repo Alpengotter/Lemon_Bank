@@ -2,6 +2,7 @@ package com.dlb.lemon_bank.domain.mapper.service;
 
 import com.dlb.lemon_bank.domain.dto.ExcelDateFilterDto;
 import com.dlb.lemon_bank.domain.entity.UserEntity;
+import com.dlb.lemon_bank.domain.repository.AnalitiqueRepository;
 import com.dlb.lemon_bank.domain.repository.OrdersRepository;
 import com.dlb.lemon_bank.domain.repository.UserRepository;
 import com.dlb.lemon_bank.handler.ErrorType;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 public class OrderMapperService {
     private final UserRepository userRepository;
     private final OrdersRepository ordersRepository;
+    private final AnalitiqueRepository analitiqueRepository;
 
     @Named("mapEmailToId")
     public UserEntity mapEmailToId(String email) {
@@ -49,6 +51,6 @@ public class OrderMapperService {
 
     @Named("mapCountOrders")
     public Integer countOrders(ExcelDateFilterDto filterDto) {
-        return ordersRepository.countAllProccessedOrders(filterDto.getMonth(), filterDto.getYear());
+        return analitiqueRepository.countAllProccessedOrders(filterDto.getMonth(), filterDto.getYear());
     }
 }

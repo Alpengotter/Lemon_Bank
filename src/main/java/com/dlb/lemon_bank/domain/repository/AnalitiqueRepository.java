@@ -28,4 +28,13 @@ public interface AnalitiqueRepository extends JpaRepository<AnalitiqueEntity, In
         String type,
         Integer year
     );
+
+    @Query("SELECT count(a) FROM AnalitiqueEntity a "
+        + "where YEAR(a.date) = :year "
+        + "and MONTH(a.date) = :month "
+        + "and (a.type = 'accept_order' or a.type = 'decline_order')")
+    Integer countAllProccessedOrders(
+        Integer month,
+        Integer year
+    );
 }
