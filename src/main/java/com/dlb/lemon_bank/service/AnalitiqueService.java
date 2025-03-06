@@ -67,9 +67,9 @@ public class AnalitiqueService {
             List<AnalitiqueEntity> analitiqueEntities = analitiqueForTypes.get(type);
             for (AnalitiqueEntity entity: analitiqueEntities) {
                 if (StringUtils.contains(entity.getType(), "reward") ||
-                    StringUtils.contains(entity.getType(), "order")) {
+                    StringUtils.equals(entity.getType(), "order")) {
                     int monthValue = entity.getDate().getMonthValue();
-                    totalMonthList.set(monthValue - 1, Math.abs(totalMonthList.get(monthValue - 1) + entity.getCount()));
+                    totalMonthList.set(monthValue - 1, totalMonthList.get(monthValue - 1) + Math.abs(entity.getCount()));
                     total += Math.abs(entity.getCount());
                 } else {
                     int monthValue = entity.getDate().getMonthValue();
