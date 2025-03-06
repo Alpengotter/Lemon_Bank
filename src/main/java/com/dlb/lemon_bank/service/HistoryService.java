@@ -11,6 +11,7 @@ import com.dlb.lemon_bank.domain.repository.UserRepository;
 import com.dlb.lemon_bank.handler.ErrorType;
 import com.dlb.lemon_bank.handler.exception.LemonBankException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +46,7 @@ public class HistoryService {
         HistoryEntity historyEntity = HistoryEntity.builder()
             .admin(admin.get())
             .user(orders.getEmployee())
-            .date(LocalDate.now())
+            .date(LocalDateTime.now())
             .type("order")
             .comment("Подтверждение заказа")
             .order(orders)
@@ -68,7 +69,7 @@ public class HistoryService {
             HistoryEntity historyLemons = HistoryEntity.builder()
                 .admin(admin.get())
                 .user(user)
-                .date(LocalDate.now())
+                .date(LocalDateTime.now())
                 .type("reward")
                 .comment(comment)
                 .order(null)
@@ -82,7 +83,7 @@ public class HistoryService {
             HistoryEntity historyDiamonds = HistoryEntity.builder()
                 .admin(admin.get())
                 .user(user)
-                .date(LocalDate.now())
+                .date(LocalDateTime.now())
                 .type("reward")
                 .comment(comment)
                 .order(null)

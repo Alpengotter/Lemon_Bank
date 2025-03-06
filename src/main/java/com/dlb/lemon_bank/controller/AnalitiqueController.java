@@ -28,9 +28,9 @@ public class AnalitiqueController {
 
     @GetMapping("/get-analitique-summary")
     public List<AnalitiqueSummaryResponseDto> getAnalitiqueSummary(
-        @RequestParam(value = "type", required = false) String type,
+        @RequestParam(value = "type", required = false) List<String> typeList,
         @RequestParam(value = "year") Integer year) {
-        return analitiqueService.getAnalitiqueSummary(type, year);
+        return analitiqueService.getAnalitiqueSummary(typeList, year);
     }
 
 }

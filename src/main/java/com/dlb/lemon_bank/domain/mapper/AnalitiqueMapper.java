@@ -4,6 +4,7 @@ package com.dlb.lemon_bank.domain.mapper;
 import com.dlb.lemon_bank.domain.dto.AnalitiqueResponseDto;
 import com.dlb.lemon_bank.domain.dto.AnalitiqueSummaryResponseDto;
 import com.dlb.lemon_bank.domain.entity.AnalitiqueEntity;
+import com.dlb.lemon_bank.domain.entity.HistoryEntity;
 import com.dlb.lemon_bank.domain.mapper.service.AnalitiqueMapperService;
 import com.dlb.lemon_bank.domain.mapper.service.OrderMapperService;
 import java.util.List;
@@ -23,5 +24,11 @@ public interface AnalitiqueMapper {
     @Mapping(target = "type", source = "analitiqueEntity.type", qualifiedByName = "mapType")
     AnalitiqueSummaryResponseDto toAnalitiqueSummaryResponseDto(AnalitiqueEntity analitiqueEntity);
     List<AnalitiqueSummaryResponseDto> toAnalitiqueSummaryResponseDtoList(List<AnalitiqueEntity> analitiqueEntityList);
+
+    @Mapping(target = "count", source = "historyEntity.value")
+    @Mapping(target = "id", ignore = true)
+    AnalitiqueEntity toAnalitiqueEntity(HistoryEntity historyEntity);
+
+    List<AnalitiqueEntity> toAnalitiqueEntityList(List<HistoryEntity> historyEntityList);
 
 }

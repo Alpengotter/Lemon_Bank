@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +37,7 @@ public class HistoryEntity {
     @JoinColumn(name = "admin_id")
     private UserEntity admin;
     @Column(name = "date_")
-    private LocalDate date;
+    private LocalDateTime date;
     @Column(name = "type_")
     private String type;
     @Column(name = "comment")

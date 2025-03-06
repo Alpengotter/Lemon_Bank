@@ -69,7 +69,7 @@ public class OrdersService {
 
         if (status.equals("ACCEPTED")) {
             analitiqueService.saveAnalitique(AnalitiqueType.ACCEPT_ORDER.getMessage(),
-                ordersEntity.getTotal(),
+                -ordersEntity.getTotal(),
                 "lemons");
             UserEntity employee = ordersEntity.getEmployee();
             Integer employeeLemons = employee.getLemons();

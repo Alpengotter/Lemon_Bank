@@ -51,6 +51,6 @@ public class OrderMapperService {
 
     @Named("mapCountOrders")
     public Integer countOrders(ExcelDateFilterDto filterDto) {
-        return analitiqueRepository.countAllProccessedOrders(filterDto.getMonth(), filterDto.getYear());
+        return analitiqueRepository.countAllProcessedOrders(filterDto.getMonth(), filterDto.getYear());
     }
 }
