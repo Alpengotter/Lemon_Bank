@@ -15,6 +15,7 @@ import com.dlb.lemon_bank.handler.ErrorType;
 import com.dlb.lemon_bank.handler.exception.LemonBankException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -197,5 +198,11 @@ public class UserService {
             .diamonds(diamonds)
             .lemons(lemons)
             .build();
+    }
+
+    public Set<String> getUniqueJobTitle() {
+        Set<String> uniqueJobTitles = userRepository.getUniqueJobTitles();
+        uniqueJobTitles.remove("");
+        return uniqueJobTitles;
     }
 }

@@ -3,6 +3,7 @@ package com.dlb.lemon_bank.domain.repository;
 import com.dlb.lemon_bank.domain.entity.UserEntity;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -41,4 +42,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     Integer countAllDiamonds();
     @Query("select SUM (u.lemons) from UserEntity u where u.isActive = true ")
     Integer countAllLemons();
+    @Query("select distinct u.jobTitle from UserEntity u "
+        + "where u.jobTitle is not null")
+    Set<String> getUniqueJobTitles();
 }
