@@ -43,6 +43,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query("select SUM (u.lemons) from UserEntity u where u.isActive = true ")
     Integer countAllLemons();
     @Query("select distinct u.jobTitle from UserEntity u "
-        + "where u.jobTitle is not null")
+        + "where u.jobTitle is not null "
+        + "and trim(u.jobTitle) <> '' ")
     Set<String> getUniqueJobTitles();
 }

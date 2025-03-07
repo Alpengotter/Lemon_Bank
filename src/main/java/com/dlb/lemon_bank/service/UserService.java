@@ -201,8 +201,6 @@ public class UserService {
     }
 
     public Set<String> getUniqueJobTitle() {
-        Set<String> uniqueJobTitles = userRepository.getUniqueJobTitles();
-        uniqueJobTitles.remove("");
-        return uniqueJobTitles;
+        return userRepository.getUniqueJobTitles();
     }
 }
