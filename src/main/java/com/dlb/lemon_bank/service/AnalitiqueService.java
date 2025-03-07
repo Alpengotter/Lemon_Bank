@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +58,16 @@ public class AnalitiqueService {
     @Transactional
     public List<AnalitiqueSummaryResponseDto> getAnalitiqueSummary(List<String> types, Integer year) {
         List<AnalitiqueSummaryResponseDto> result = new ArrayList<>();
+        if (Objects.isNull(types)) {
+            types = new ArrayList<>();
+            types.addAll(List.of(
+                "orders_processed",
+                "lemons_accrued",
+                "lemons_spend",
+                "diamonds_accrued",
+                "diamonds_spend",
+                "new_employer"));
+        }
 
         Map<String, List<AnalitiqueEntity>> analitiqueForTypes = getAnalitiqueForTypes(types, year);
 
@@ -78,7 +89,7 @@ public class AnalitiqueService {
                 }
             }
             result.add(AnalitiqueSummaryResponseDto.builder()
-                    .type(type)
+                    .type(StringUtils.toRootUpperCase(type))
                     .totalMounth(totalMonthList)
                     .total(total)
                 .build());
