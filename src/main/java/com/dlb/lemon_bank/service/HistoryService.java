@@ -102,14 +102,16 @@ public class HistoryService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDate dateFrom = LocalDate.parse(dateFromString, formatter);
         LocalDate dateTo = LocalDate.parse(dateToString, formatter);
+        LocalDateTime dateTimeFrom = dateFrom.atStartOfDay();
+        LocalDateTime dateTimeTo = dateTo.atStartOfDay();
         if (isEnglishSymbols(searchParameter)) {
             List<HistoryEntity> historyEntities = historyRepository.findAllByDateBetweenAndUserEmailContainingOrderByIdDesc(
-                dateFrom, dateTo, searchParameter);
+                dateTimeFrom, dateTimeTo, searchParameter);
             return historyMapper.toHistoryResponseDtoList(historyEntities);
         } else {
             List<HistoryEntity> historyEntities =
                 historyRepository.findAllByDateBetweenAndUserFirstNameContainingOrUserLastNameContainingOrderByIdDesc(
-                    dateFrom, dateTo, searchParameter, searchParameter);
+                    dateTimeFrom, dateTimeTo, searchParameter, searchParameter);
             return historyMapper.toHistoryResponseDtoList(historyEntities);
         }
     }

@@ -2,6 +2,7 @@ package com.dlb.lemon_bank.domain.repository;
 
 import com.dlb.lemon_bank.domain.entity.HistoryEntity;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,8 +17,8 @@ public interface HistoryRepository extends JpaRepository<HistoryEntity, Integer>
         + "and (lower(u.email) like lower(concat('%', :email, '%')))"
         + "order by h.id desc ")
     List<HistoryEntity> findAllByDateBetweenAndUserEmailContainingOrderByIdDesc(
-        LocalDate dateFrom,
-        LocalDate dateTo,
+        LocalDateTime dateFrom,
+        LocalDateTime dateTo,
         String email);
 
     @Query("select h from HistoryEntity h "
@@ -27,8 +28,8 @@ public interface HistoryRepository extends JpaRepository<HistoryEntity, Integer>
         + "and ((lower(u.firstName) like lower(concat('%', :firstName, '%'))) or (lower(u.lastName) like lower(concat('%', :lastName, '%'))))"
         + "order by h.id desc ")
     List<HistoryEntity> findAllByDateBetweenAndUserFirstNameContainingOrUserLastNameContainingOrderByIdDesc(
-        LocalDate dateFrom,
-        LocalDate dateTo,
+        LocalDateTime dateFrom,
+        LocalDateTime dateTo,
         String firstName,
         String lastName);
 
