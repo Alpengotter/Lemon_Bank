@@ -1,6 +1,7 @@
 version: '3'
 services:
   lemon_bank_app:
+    restart: unless-stopped
     depends_on:
       - lemon_db_postgres
     env_file:
