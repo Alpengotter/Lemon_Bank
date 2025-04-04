@@ -31,6 +31,7 @@ public class AuthService {
 
     @Transactional
     public JwtResponseDto getNewUserTokenFromLogin(JwtRequestDto requestDto) {
+
         UserEntity user = userRepository.findByEmailIgnoreCase(requestDto.getEmail())
             .orElseThrow(() -> new LemonBankException(ErrorType.USER_NOT_FOUND));
         if (Objects.isNull(requestDto.getPassword()) || !requestDto.getPassword().equals(user.getPassword())) {
