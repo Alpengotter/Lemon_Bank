@@ -30,9 +30,7 @@ public class SecurityConfig {
     private List<String> allowedOrigins = List.of(
         "https://bankoflemons.ru",
         "https://store.zarplata.ru",
-        "https://uat.bankoflemons.ru",
-        "https://project12501643.tilda.ws",
-        "https://*.tilda.ws");
+        "https://uat.bankoflemons.ru");
 
     @Bean
     PasswordEncoder passwordEncoder() {
