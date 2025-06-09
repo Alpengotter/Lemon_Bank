@@ -31,8 +31,7 @@ public class SecurityConfig {
         "https://bankoflemons.ru",
         "https://store.zarplata.ru",
         "https://uat.bankoflemons.ru",
-        "https://project12501643.tilda.ws",
-        "https://*.tilda.ws");
+        "https://project12501643.tilda.ws");
 
     @Bean
     PasswordEncoder passwordEncoder() {
